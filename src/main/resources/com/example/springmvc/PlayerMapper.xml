@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springmvc.PlayerMapper">
+   <sql id="from_and_where">
+     from player <where><if test="condition.nameLike != null and condition.nameLike != ''">and name like '%' || #{condition.nameLike} || '%'</if><if test="condition.positionEqualTo != null and condition.positionEqualTo != ''">and position = #{condition.positionEqualTo}</if></where>
+   </sql>
    <select id="search" resultType="com.example.springmvc.Player">
-      select * from (select * from player <where><if test="condition.nameLike != null and condition.nameLike != ''">and name like '%' || #{condition.nameLike} || '%'</if><if test="condition.positionEqualTo != null and condition.positionEqualTo != ''">and position = #{condition.positionEqualTo}</if></where> order by ${ps.sortId} ${ps.orderType}) where rownum between (#{ps.page} - 1) * #{ps.page} + 1 and  #{ps.page} * #{ps.perPage}
+      select * from (select row_number() over() as number, a.* from (select * <include refid="from_and_where" /> order by ${ps.sortId} ${ps.orderType}) a)  where number between #{ps.startRow} and #{ps.endRow}
+   </select>
+   <select id="count" resultType="Integer">
+      select count(*) <include refid="from_and_where" />
    </select>
    <select id="findOne" resultType="com.example.springmvc.Player">
       select * from player where id = #{id}

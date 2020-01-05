@@ -46,4 +46,12 @@ public class PagingAndSorting {
     public void setOrderType(String orderType) {
         this.orderType = orderType;
     }
+
+    public int getStartRow() {
+        return (page - 1) * perPage + 1;
+    }
+
+    public int getEndRow() {
+        return page * perPage;
+    }
 }

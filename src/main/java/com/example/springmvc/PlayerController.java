@@ -23,13 +23,13 @@ public class PlayerController {
         PagingAndSorting ps = new PagingAndSorting("name asc, position asc", 10);
         model.addAttribute("condition", condition);
         model.addAttribute("ps", ps);
-        model.addAttribute("players", playerService.search(condition, ps));
+        model.addAttribute("pagedPlayer", playerService.search(condition, ps));
         return "players/index";
     }
 
     @PostMapping("search")
     public String search(@ModelAttribute(name = "condition") PlayerSearchCondition condition, @ModelAttribute(name = "ps") PagingAndSorting ps, Model model) {
-        model.addAttribute("players", playerService.search(condition, ps));
+        model.addAttribute("pagedPlayer", playerService.search(condition, ps));
         return "players/index";
     }
 

@@ -12,8 +12,10 @@ public class PlayerService {
     @Autowired
     private PlayerMapper playerMapper;
 
-    public List<Player> search(PlayerSearchCondition condition, PagingAndSorting ps) {
-        return playerMapper.search(condition, ps);
+    public Pageable<Player> search(PlayerSearchCondition condition, PagingAndSorting ps) {
+        int count = playerMapper.count(condition);
+        List<Player> resultList = playerMapper.search(condition, ps);
+        return new Pageable<Player>(resultList, count, ps);
     }
 
     public Player findOne(Long id) {
