@@ -19,7 +19,11 @@ public class PlayerController {
 
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("players", playerService.findAll());
+        PlayerSearchCondition condition = new PlayerSearchCondition();
+        PagingAndSorting ps = new PagingAndSorting("name asc, position asc", 10);
+        model.addAttribute("condition", condition);
+        model.addAttribute("pagingAndSorting", ps);
+        model.addAttribute("players", playerService.search(condition, ps));
         return "players/index";
     }
 

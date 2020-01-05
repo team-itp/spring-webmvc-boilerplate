@@ -8,15 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PlayerService {
+
     @Autowired
     private PlayerMapper playerMapper;
 
-    @Transactional
-    public List<Player> findAll() {
-        return playerMapper.findAll();
+    public List<Player> search(PlayerSearchCondition condition, PagingAndSorting ps) {
+        return playerMapper.search(condition, ps);
     }
 
-    @Transactional
     public Player findOne(Long id) {
         return playerMapper.findOne(id);
     }
